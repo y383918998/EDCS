@@ -1,0 +1,30 @@
+^D:\EDCS\CPP-CLIENT\BUILD\CMAKEFILES\05FC5711BDE0A564B48ED8863253B72B\OBJECT_REPOSITORY.PB.H.RULE
+setlocal
+C:\Users\Xin\vcpkg\installed\x64-windows\tools\protobuf\protoc.exe --cpp_out :D:/EDCS/cpp-client/build/generated -I D:/EDCS/cpp-client D:/EDCS/cpp-client/object_repository.proto
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\EDCS\CPP-CLIENT\BUILD\CMAKEFILES\05FC5711BDE0A564B48ED8863253B72B\OBJECT_REPOSITORY.GRPC.PB.CC.RULE
+setlocal
+C:\Users\Xin\vcpkg\installed\x64-windows\tools\protobuf\protoc.exe --grpc_out=D:/EDCS/cpp-client/build/generated --plugin=protoc-gen-grpc=C:/Users/Xin/vcpkg/installed/x64-windows/tools/grpc/grpc_cpp_plugin.exe -I D:/EDCS/cpp-client D:/EDCS/cpp-client/object_repository.proto
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\EDCS\CPP-CLIENT\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/EDCS/cpp-client -BD:/EDCS/cpp-client/build --check-stamp-file D:/EDCS/cpp-client/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
