@@ -65,15 +65,15 @@ EDCS/
 
 ### 2. Java Client
 1. Navigate to the `java - client` directory.
-2. Run `./gradlew build` to build the project.
+2. Run `./gradlew.bat run` to build&run the project.
 
 ### 3. C++ Client
 1. Navigate to the `cpp - client` directory.
 2. Create a build directory, e.g., `mkdir build && cd build`.
-3. Run `cmake -DCMAKE_TOOLCHAIN_FILE="your/repo/vcpkg/scripts/buildsystems/vcpkg.cmake" ..`
+3. Run `cmake -DCMAKE_TOOLCHAIN_FILE="your/dir/to/vcpkg/scripts/buildsystems/vcpkg.cmake" ..`
 4. Run `cmake..` to generate build files.
 5. Run `cmake --build.` to build the project.
-6. Run the generated executable `client` to start the C++ client.
+6. Run the generated executable `.\Debug\client.exe` to start the C++ client.
 
 ## Protocol Buffers Definition
 The `object_repository.proto` file defines the messages and services used in the system. It includes messages such as `RegisterRequest`, `RegisterResponse`, etc., and a service `ObjectRepository` with methods like `RegisterObject`, `DeregisterObject`, etc.
