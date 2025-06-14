@@ -55,11 +55,11 @@ EDCS/
 ## How to Build and Run
 
 ### 1. Python Client and Server
-#### Server
+#### 1.1. Server
 1. Navigate to the root directory of the project.
 2. Run `python registry_server.py` to start the registry server.
 
-#### 1.1(Optional) Client_test
+#### 1.2. (Optional) Client_test
 1. Navigate to the root directory of the project.
 2. Run `python test_client.py` to start the Python test client.
 
