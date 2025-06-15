@@ -1,18 +1,17 @@
 #include <iostream>
 #include <fcntl.h>
 #include <io.h>
+#include <string>
 
-// ==== 防止 windows.h 把 GetObject 宏化成 GetObjectA/W ====
 #ifndef WIN32_LEAN_AND_MEAN
-#define WIN32_LEAN_AND_MEAN   // 精简 windows 头
+#define WIN32_LEAN_AND_MEAN
 #endif
 #ifndef NOMINMAX
-#define NOMINMAX              // 禁掉 min/max 宏
+#define NOMINMAX
 #endif
 #ifndef NOGDI
-#define NOGDI                 // 完全屏蔽 GDI → 不再生成 GetObject 宏
+#define NOGDI
 #endif
-// ===========================================================
 
 #include <grpcpp/grpcpp.h>
 #include "object_repository.grpc.pb.h"
@@ -24,16 +23,16 @@ using grpc::Status;
 
 class RegistryClient {
 public:
-    explicit RegistryClient(std::shared_ptr<Channel> ch)
-        : stub_(obj::ObjectRepository::NewStub(ch)) {}
+    RegistryClient(std::shared_ptr<Channel> ch, const std::string& name, const std::string& addr)
+        : stub_(obj::ObjectRepository::NewStub(ch)), object_name_(name), object_address_(addr) {}
 
     bool Register() {
         obj::RegisterRequest req;
-        req.set_object_name("Calculator");
-        req.set_object_address("127.0.0.1:8000");
+        req.set_object_name(object_name_);
+        req.set_object_address(object_address_);
         req.set_language("C++");
         req.set_version("1.0");
-        req.set_region("US");
+        req.set_region("PL");  // ✅ 波兰
 
         obj::RegisterResponse resp;
         ClientContext ctx;
@@ -43,7 +42,7 @@ public:
 
     std::string Lookup() {
         obj::GetRequest req;
-        req.set_object_name("Calculator");
+        req.set_object_name(object_name_);
 
         obj::GetResponse resp;
         ClientContext ctx;
@@ -53,7 +52,7 @@ public:
 
     bool Heartbeat() {
         obj::HeartbeatPing ping;
-        ping.set_object_name("Calculator");
+        ping.set_object_name(object_name_);
 
         obj::HeartbeatAck ack;
         ClientContext ctx;
@@ -63,7 +62,7 @@ public:
 
     bool Deregister() {
         obj::DeregisterRequest req;
-        req.set_object_name("Calculator");
+        req.set_object_name(object_name_);
 
         obj::DeregisterResponse resp;
         ClientContext ctx;
@@ -73,14 +72,19 @@ public:
 
 private:
     std::unique_ptr<obj::ObjectRepository::Stub> stub_;
+    std::string object_name_;
+    std::string object_address_;
 };
 
 int main() {
-    // 设置控制台输出为 UTF-8 编码
     _setmode(_fileno(stdout), _O_U16TEXT);
-    auto channel = grpc::CreateChannel("localhost:50051",
-                                       grpc::InsecureChannelCredentials());
-    RegistryClient cli(channel);
+
+    std::string server_ip = "192.168.5.44:50051"; 
+    std::string object_name = "Cpp_Calculator";   // ✅ 自定义客户端名称
+    std::string my_object_address = "192.168.5.42:8000";
+
+    auto channel = grpc::CreateChannel(server_ip, grpc::InsecureChannelCredentials());
+    RegistryClient cli(channel, object_name, my_object_address);
 
     if (cli.Register())
         std::wcout << L"✔ Registered\n";

@@ -131,7 +131,12 @@ class ObjectRepositoryServicer(pbg.ObjectRepositoryServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     pbg.add_ObjectRepositoryServicer_to_server(ObjectRepositoryServicer(DB_PATH), server)
-    server.add_insecure_port('[::]:50051')
+    
+    # 明确指定监听的 IP 地址（可选）
+    server.add_insecure_port('192.168.5.44:50051')
+    # 或者继续监听所有接口（推荐）
+    # server.add_insecure_port('[::]:50051')
+    
     server.start()
     print("✅ Registry server is running on port 50051...")
     try:
