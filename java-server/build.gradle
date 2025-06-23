@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.9.4'
+    id 'application'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.grpc:grpc-netty-shaded:1.62.2'
+    implementation 'io.grpc:grpc-protobuf:1.62.2'
+    implementation 'io.grpc:grpc-stub:1.62.2'
+    implementation 'com.google.protobuf:protobuf-java:3.25.1'
+    implementation 'com.google.code.gson:gson:2.10.1'
+    compileOnly 'org.apache.tomcat:annotations-api:6.0.53'
+    testImplementation 'junit:junit:4.13.2'
+}
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.25.1'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.62.2'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
+}
+compileJava.dependsOn generateProto
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated/source/proto/main/java"
+            srcDirs += "$buildDir/generated/source/proto/main/grpc"
+        }
+    }
+}
+
+application {
+    mainClass = 'objectrepo.ObjectRepositoryServer'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

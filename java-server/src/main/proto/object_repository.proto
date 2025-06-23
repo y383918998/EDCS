@@ -1,0 +1,55 @@
+syntax = "proto3";
+package objectrepo;
+option java_package = "objectrepo";
+option java_outer_classname = "ObjectRepositoryProto";
+
+import "google/protobuf/empty.proto";
+
+message RegisterRequest  {
+  string object_name = 1;
+  string object_address = 2;
+  string language = 3;
+  string version = 4;
+  string region = 5;
+  bool is_replication = 6;
+}
+message RegisterResponse { bool success = 1; }
+
+message DeregisterRequest  { string object_name = 1; bool is_replication = 2; }
+message DeregisterResponse { bool success = 1; }
+
+message UpdateRequest  {
+  string object_name = 1;
+  string object_address = 2;
+  string language = 3;
+  string version = 4;
+  string region = 5;
+  bool is_replication = 6;
+}
+message UpdateResponse { bool success = 1; }
+
+message GetRequest  { string object_name = 1; }
+message GetResponse { string object_address = 1; }
+
+message ObjectInfo {
+  string object_name    = 1;
+  string object_address = 2;
+  string language       = 3;
+  string version        = 4;
+  string region         = 5;
+}
+
+message ObjectListResponse { repeated ObjectInfo objects = 1; }
+
+message HeartbeatPing { string object_name = 1; }
+message HeartbeatAck  { bool ok = 1; }
+
+service ObjectRepository {
+  rpc RegisterObject   (RegisterRequest)       returns (RegisterResponse);
+  rpc DeregisterObject (DeregisterRequest)     returns (DeregisterResponse);
+  rpc UpdateObject     (UpdateRequest)         returns (UpdateResponse);
+  rpc GetObject        (GetRequest)            returns (GetResponse);
+  rpc ListObjects      (google.protobuf.Empty) returns (ObjectListResponse);
+  rpc Heartbeat        (HeartbeatPing)         returns (HeartbeatAck);
+  rpc SyncState        (ObjectListResponse)    returns (google.protobuf.Empty);
+}

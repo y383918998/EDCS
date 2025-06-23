@@ -1,0 +1,18 @@
+{
+  "node_id"        : "srvA",                  
+  "self_address"   : "0.0.0.0:50051",         
+  "hb_address"     : "0.0.0.0:50052",         
+  "database"       : "registryA.db",
+  "ttl_seconds"    : 30,
+
+  "peers": [                                
+    {
+      "id"      : "srvB",
+      "host"    : "192.168.188.236",
+      "biz_port": 50051,
+      "hb_port" : 50052
+    }
+  ],
+
+  "bootstrap_primary": false                
+}

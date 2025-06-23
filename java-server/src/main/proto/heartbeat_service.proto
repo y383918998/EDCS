@@ -1,0 +1,17 @@
+syntax = "proto3";
+option java_package = "hb";
+option java_outer_classname = "HeartbeatProto";
+
+package hb;
+
+import "google/protobuf/empty.proto";
+
+service HeartbeatService {
+  rpc Ping(google.protobuf.Empty) returns (google.protobuf.Empty);
+  rpc GetUptime(google.protobuf.Empty) returns (UptimeInfo);
+}
+
+message UptimeInfo {
+  string node_id = 1;
+  double uptime_sec = 2;
+}
